@@ -1,43 +1,31 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
-from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
-
-from .managers import CustomUserManager
+from account.models import CustomUser
 
 
-class Employee(AbstractBaseUser, PermissionsMixin):
-    USER_TYPE_CHOICES = [
-        ('user', 'user'),
-        ('admin', 'admin'),
-        # Add more choices as needed
-    ]
-    USER_TYPE_CHOICES = [
-        ('user', 'user'),
-        ('admin', 'admin'),
-        # Add more choices as needed
-    ]
+class Company(models.Model):
+  owner = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+  name = models.CharField(max_length = 100)
+  since_year = models.IntegerField()
+  location  = models.CharField(max_length=255)
+  about = models.TextField(blank=True, null=True)
 
+class Employee(models.Model):
 
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(_("email address"), unique=True)
-    phone = models.CharField(max_length=15)
-    department = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='user')
+  DEPT_TYPE =  [
+    ('Engineering', 'Engineering Department'),
+    ('Product Management', 'Product Management Department'),
+    ('Quality Assurance', 'Quality Assurance Department'),
+    ('Design', 'Design Department'),
+    ('Sales', 'Sales Department'),
+    ('Marketing', 'Marketing Department'),
+    ('Human Resources', 'Human Resources Department'),
+    ('Finance', 'Finance Department'),
+    ('Customer Support', 'Customer Support Department'),
+    ('Operations', 'Operations Department'),
+  ]
 
+  department = models.CharField(max_length=100, choices=DEPT_TYPE, blank=True, null=True)
+  company = models.ForeignKey(Company, on_delete=models.CASCADE)
+  user = models.OneToOneField(CustomUser,  on_delete=models.CASCADE)
+  join_date = models.DateTimeField(auto_now_add=True)
 
-    # user type
-    user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='user')
-
-    is_verified = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    date_joined = models.DateTimeField(default=timezone.now)
-
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
-
-    objects = CustomUserManager()
-
-    def __str__(self):
-        return self.email

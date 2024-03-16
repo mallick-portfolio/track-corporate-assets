@@ -7,7 +7,7 @@ from django.contrib.auth.password_validation import validate_password
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = CustomUser
-    fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'user_type']
+    fields = ['id', 'first_name', 'last_name', 'phone', 'email', 'user_type',  'gender']
 
 
 # registration serializer
@@ -30,6 +30,26 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     if password != password2:
       raise serializers.ValidationError({'password': 'Passwords must match.'})
+    user.set_password(password)
+    user.save()
+    return user
+class CreateEmployeeWithUserSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = CustomUser
+    fields = ['email', 'first_name', 'last_name', 'password', 'gender', 'phone']
+    extra_kwargs = {
+        'password': {'write_only': True}
+    }
+
+  def save(self):
+    email = self.validated_data['email']
+    first_name = self.validated_data['first_name']
+    last_name = self.validated_data['last_name']
+    phone = self.validated_data['phone']
+    gender = self.validated_data['gender']
+    password = self.validated_data['password']
+    user = CustomUser(email=email, first_name=first_name, last_name=last_name, phone=phone,gender=gender)
     user.set_password(password)
     user.save()
     return user

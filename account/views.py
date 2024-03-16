@@ -8,9 +8,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from account.models import CustomUser
 import traceback
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework_simplejwt.tokens import RefreshToken
 from account.helpers import get_tokens_for_user
 
 
@@ -59,8 +57,6 @@ class LoginAPIView(APIView):
       if user is not None:
         login(request, user=user)
         token = get_tokens_for_user(user)
-
-
         return Response({
           "success": True,
           "token": token,

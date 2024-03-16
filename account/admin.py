@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    list_display = ('first_name', 'last_name', 'email')
+    list_display = ('id', 'first_name', 'last_name', 'email')
     list_filter = ("email",)
     fieldsets = (
         (None, {"fields": ("email", "password", 'first_name', 'last_name', 'phone', 'gender', 'user_type',)}),
@@ -14,7 +14,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {
             "classes": ("wide",),
             "fields": (
-               'first_name', 'last_name', 'phone', 'gender', 'user_type',  'department', "password1", "password2","is_staff",
+               'first_name', 'last_name', 'phone', 'gender', 'user_type', "password1", "password2","is_staff",
                 "groups", "user_permissions"
             )}
         ),

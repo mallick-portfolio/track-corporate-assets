@@ -18,18 +18,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ('Male', 'Male'),
         ('Female', 'Female'),
     ]
-    DEPT_TYPE =  [
-    ('Engineering', 'Engineering Department'),
-    ('Product Management', 'Product Management Department'),
-    ('Quality Assurance', 'Quality Assurance Department'),
-    ('Design', 'Design Department'),
-    ('Sales', 'Sales Department'),
-    ('Marketing', 'Marketing Department'),
-    ('Human Resources', 'Human Resources Department'),
-    ('Finance', 'Finance Department'),
-    ('Customer Support', 'Customer Support Department'),
-    ('Operations', 'Operations Department'),
-  ]
 
 
 
@@ -39,7 +27,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=15)
     gender = models.CharField(max_length=10, choices=GENDER_TYPE)
     user_type = models.CharField(max_length=10, choices=USER_TYPE, default='Employee')
-    department = models.CharField(max_length=100, choices=DEPT_TYPE)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -49,6 +36,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
-
-    def __str__(self):
-        return self.email
