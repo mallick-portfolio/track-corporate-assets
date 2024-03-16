@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from employee.models import Company, Employee
+from employee.models import Company, Employee, Device, AllocationDevice, DeviceConditionLog
 from account.serializers import  CreateEmployeeWithUserSerializer
 from account.models import CustomUser
 
@@ -24,6 +24,25 @@ class CreateEmployeeSerializer(serializers.ModelSerializer):
 class EmployeeSerializer(serializers.ModelSerializer):
   class Meta:
     model = Employee
+    fields = '__all__'
+
+
+class DeviceSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Device
+    fields = '__all__'
+
+
+class AllocationDeviceSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = AllocationDevice
+    fields = '__all__'
+
+
+
+class DeviceConditionLogSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = DeviceConditionLog
     fields = '__all__'
 
 
